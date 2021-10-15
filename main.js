@@ -40,6 +40,13 @@ const password = config.password;
     let events = await page.$$eval("div.fc-content > span.fc-title", elements => elements.map(item => item.textContent));
     let nbSemaine = await page.$$eval("tr > td.fc-week-number", elements => elements.map(item => item.textContent));
     let nbJour = await page.$$eval("tr > td.fc-day-number", elements => elements.map(item => item.textContent));
+
+
+    // On enléve les espaces ...
+    let listeCopie = [];
+    nbSemaine.map(item => item !== '' ? listeCopie.push(item) : '');
+    nbSemaine = listeCopie;
+
     console.log(events);
     // On récupére donc les dates par tranche de semaines
     // D'abord les numéros de semaines
