@@ -13,7 +13,7 @@ Projet en cours de dévéloppement par un éléve de CIR² à l'ISEN. Le but ét
 - [ ] Update auto le fichier tous les soirs
 
 
-Pour utiliser le script (a vos risques et peril, il n'est pas fini), il faut installer 'puppeteer' :
+Pour utiliser le script (à vos risques et perils, il n'est pas fini), il faut installer 'puppeteer' :
 ```console
 npm i -g puppeteer
 ```
