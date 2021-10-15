@@ -8,7 +8,7 @@ Projet en cours de dévéloppement par un éléve de CIR² à l'ISEN. Le but ét
 - [x] Passer en affichage "MOIS"
 - [x] Récupérer les données du mois
 - [x] Traiter les donner pour les passer dans un tableau
-- [ ] Exporter les données JSON en un icalendar
+- [ ] Exporter les données dans un icalendar
 - [ ] Rendre le icalendar disponible en ligne pour synchronisation 
 - [ ] Update auto le fichier tous les soirs
 
