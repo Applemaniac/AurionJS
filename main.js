@@ -1,7 +1,8 @@
 const puppeteer = require('puppeteer');
+const config = require("./config"); // Fichier avec 2 variables :  user et password.
 
-const username = "";
-const password = "";
+const username = config.user;
+const password = config.password;
 
 (async () => {
     const browser = await puppeteer.launch();
