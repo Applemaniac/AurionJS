@@ -70,6 +70,7 @@ let daterEvents = (events, dateJours, dateSemaine) => {
     let fini = [0, 0, 0, 0, 0, 1];
     let nbSemaine = 0;
     let retour = {"Semaine" : []};
+    let index = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
     // On crée le JSON avec les  6 semaines. C'était pas facile à prendre en main. Mais dès que tu as le truc c'es simple
     for (let i = 0; i < dateSemaine.length; i++){
@@ -85,6 +86,13 @@ let daterEvents = (events, dateJours, dateSemaine) => {
 
             };
     }
+
+    // item.prof = item.prof.slice(item.prof.match(/#END#/).index, item.prof.length);
+    let position = 0;
+    for (let i = 0; i < events.Events.length; i++){
+
+    }
+
     return retour;
 }
 
@@ -94,3 +102,4 @@ let test = stringToArray(data.events);
 //console.log(test.Events);
 let semaine = daterEvents(test, data.nbDate, data.nbSemaine).Semaine;
 console.log(semaine[0].Jeudi);
+console.log(semaine);
