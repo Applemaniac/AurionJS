@@ -38,6 +38,18 @@ const password = config.password;
 
     // Ca c'est toutes les cases vertes ! Sauf que ca serait trop simple. Il n'y a pas de lien entre la date de l'event et l'event...
     let events = await page.$$eval("div.fc-content > span.fc-title", elements => elements.map(item => item.textContent));
+    // On récupére le taille de l'event. S'il fait plus de 1, c'est que c'est le dernier de sa ligne...
+    let eventsWithLimits = await  page.$$eval("td.fc-event-container", elements => elements.map(
+       item => item.rowSpan
+    ));
+    console.log(eventsWithLimits);
+
+    // On rajoute un flag #END# à la fin du string pour dire que c'est le dernier événement de la journée.
+
+    for (let i = 0; i < events.length; i++){
+        eventsWithLimits[i] !== 1 ? events[i] = events[i].concat('#END#') : '';
+    }
+
     let nbSemaine = await page.$$eval("tr > td.fc-week-number", elements => elements.map(item => item.textContent));
     let nbJour = await page.$$eval("tr > td.fc-day-number", elements => elements.map(item => item.textContent));
 
