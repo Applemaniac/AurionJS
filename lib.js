@@ -1,5 +1,6 @@
 const data = require("./valeurs");
 const puppeteer = require('puppeteer');
+const {nbDay} = require("./valeurs");
 
 
 /**
@@ -34,7 +35,7 @@ let stringToArray = (string) => {
             //line = line.trim();
             let cours = line;
 
-            retour['Events'].push({"salle" : '', "cours" : line, "debut" :debut, "fin" : fin, "prof" : prof});
+            retour['Events'].push({"date" : '', "salle" : '', "cours" : line, "debut" :debut, "fin" : fin, "prof" : prof});
 
 
         }else{ // Si la ligne est du type " - ISEN ...."
@@ -58,39 +59,45 @@ let stringToArray = (string) => {
 
             let cours = line;
 
-            retour['Events'].push({"salle" : salle[0], "cours" : line, "debut" :debut, "fin" : fin, "prof" : prof});
+            retour['Events'].push({"date" : '', "salle" : salle[0], "cours" : line, "debut" :debut, "fin" : fin, "prof" : prof});
 
         }
     });
     return retour;
 }
 
-let daterEvents = (events, dateJours, dateSemaine) => {
-    // Chaque jour avec un 0 pour journée qui continue et un 1 pour journée fini (le samedi est toujours à 1 CIR ZOO)
-    let fini = [0, 0, 0, 0, 0, 1];
-    let nbSemaine = 0;
-    let retour = {"Semaine" : []};
+let daterEvents = (events, nbEventPerDay, dateSemaine, nbDay) => {
+
     let index = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
-    // On crée le JSON avec les  6 semaines. C'était pas facile à prendre en main. Mais dès que tu as le truc c'es simple
-    for (let i = 0; i < dateSemaine.length; i++){
-        retour["Semaine"][i] =
-            {
-                "nbemaine": dateSemaine[i],
-                "Lundi": [],
-                "Mardi": [],
-                "Mercredi": [],
-                "Jeudi": [],
-                "Vendredi": [],
-                "Samedi": [],
+    nbDay = nbDay.map(e => e.replace(/[A-Z][a-z][a-z]\s/, ''));
 
-            };
-    }
+     // On crée le JSON avec la semaine. Le JSON était pas facile à prendre en main. Mais dès que tu as le truc c'est simple
+    let retour =
+        {
+            "nbSemaine": dateSemaine,
+            "Lundi": [],
+            "Mardi": [],
+            "Mercredi": [],
+            "Jeudi": [],
+            "Vendredi": [],
+            "Samedi": [],
 
-    // item.prof = item.prof.slice(item.prof.match(/#END#/).index, item.prof.length);
-    let position = 0;
-    for (let i = 0; i < events.Events.length; i++){
+        };
 
+    // On rajoute les dates
+    // On met les events dans les jours
+    let q = 0;
+    let a;
+    for (let i = 0; i < nbEventPerDay.length; i++){
+        a = 0;
+        while (a < nbEventPerDay[i]){
+            events.Events[q].date = nbDay[i];
+            retour[index[i]][a] = events.Events[q];
+            q++;
+            a++;
+
+        }
     }
 
     return retour;
@@ -98,8 +105,11 @@ let daterEvents = (events, dateJours, dateSemaine) => {
 
 //Cette ligne crée un objet JSON
 //let test = JSON.stringify(stringToArray(data.events));
+
 let test = stringToArray(data.events);
-//console.log(test.Events);
+//console.log(test);
+console.log(daterEvents(test, data.nbEventsPerDay, 42, data.nbDay));
+/** //console.log(test.Events);
 let semaine = daterEvents(test, data.nbDate, data.nbSemaine).Semaine;
 console.log(semaine[0].Jeudi);
-console.log(semaine);
+console.log(semaine); **/

@@ -4,8 +4,26 @@ const config = require("./config"); // Fichier avec 2 variables :  user et passw
 const username = config.user;
 const password = config.password;
 
+async function startBrowser() {
+    const options = {
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process', // <- this one doesn't works in Windows
+            '--disable-gpu'
+        ],
+        headless: true
+    }
+
+    return puppeteer.launch(options)
+}
+
 const connection = async page => {
-    await page.goto('https://aurion.junia.com/faces/Login.xhtml');
+    await page.goto('https://aurion.junia.com/faces/Login.xhtml', { waitUntil: 'networkidle2' });
     await page.focus('#username');
     await page.keyboard.type(username);
     await page.focus('#password');
@@ -22,62 +40,43 @@ const landingPageToTimeTable = async page => {
     let button = await page.$("a.ui-menuitem-link.ui-corner-all.link.item_2169484");
     await button.evaluate(b => b.click());
 
-    // On arrive sur la page de l'emploi du temps. On attend de pouvoir cliquer sur le bouton MOIS
-    await page.waitForSelector("button.fc-month-button.ui-button.ui-state-default.ui-corner-left.ui-corner-right");
+    // On arrive sur la page de l'emploi du temps. On ne clique plus le bouton MOIS
+    //await page.waitForSelector("button.fc-month-button.ui-button.ui-state-default.ui-corner-left.ui-corner-right");
     page.once('load', () => console.log("Planning chargée !"));
-    button = await page.$("button.fc-month-button.ui-button.ui-state-default.ui-corner-left.ui-corner-right");
-    await button.evaluate(b => b.click());
+    //button = await page.$("button.fc-month-button.ui-button.ui-state-default.ui-corner-left.ui-corner-right");
+    //await button.evaluate(b => b.click());
 
     await page.waitForSelector("div.fc-center"); // On attend d'avoir la date affichée
     // On affiche la date
     console.log(await page.$eval("div.fc-center", element => element.textContent));
-    await  page.waitForSelector("td.fc-event-container"); // On attend d'avoir l'emploi du temps chargé.
+    await page.waitForSelector("div.fc-content > div.fc-title"); // On attend que les casses vertes soient affichées
 }
 
 (async () => {
-    const browser = await puppeteer.launch();
+    const browser = await startBrowser();
     const page = await browser.newPage();
 
     // On se connecte à Aurion
     await connection(page);
 
-    // On va sur la page de l'emploi du temps en MOIS
+    // On va sur la page de l'emploi du temps en SEMAINE
     await landingPageToTimeTable(page);
 
+
     // On récupère tous les cases vertes comme des events
-    let events = await page.$$eval("div.fc-content > span.fc-title", elements => elements.map(item => item.textContent));
+    let events = await page.$$eval("div.fc-content > div.fc-title", elements => elements.map(item => item.textContent));
 
-    // On regarde si la case qui stock l'event fait plus d'une ligne (si oui, c'est que c'est le dernier événement de la journée)
-    let eventsWithLimits = await  page.$$eval("td.fc-event-container", elements => elements.map(
-       item => item.rowSpan
-    ));
-    // On rajoute un flag #END# à la fin du string pour dire que c'est le dernier événement de la journée.
-    for (let i = 0; i < events.length; i++){
-        eventsWithLimits[i] !== 1 ? events[i] = events[i].concat('#END#') : '';
-    }
+    // On récupère le numéro de semaine
+    let nbSemaine = await page.$eval("th.fc-axis.fc-week-number.ui-widget-header", el => el.textContent);
+    nbSemaine = nbSemaine.replace("W", '');
 
-    // On récupère le numéro de la semaine
-    let nbSemaine = await page.$$eval("tr > td.fc-week-number", elements => elements.map(item => item.textContent));
-    // On récupère les dates de chaque jour
-    let nbJour = await page.$$eval("tr > td.fc-day-number", elements => elements.map(item => item.textContent));
-    // On verifie qu'il n'y a pas de vacances
-    let vacances = [];
-    // On regarde chaque table associée à chaque semaine et on regarde le nombre de tr qu'il y a dans chaque tbody (il n'y en a qu'un quand le semaine est vide)
-    vacances.push(await page.$$eval("div.fc-content-skeleton > table > tbody", elements => elements.map(item => item.childElementCount > 1 ? 0 : 1)));
+    // On récupère les numéros de jour
+    let nbDay = await page.$$eval("th.fc-day-header.ui-widget-header", elements => elements.map(item => item.textContent));
 
-    let buttons = await page.$$eval("td.fc-event-container > a", elements => elements);
-    await page.click("td.fc-event-container > a");
-    await page.screenshot({ path: 'example.png' });
-
-
-    // On enléve les espaces ...
-    let listeCopie = [];
-    nbSemaine.map(item => item !== '' ? listeCopie.push(item) : '');
-    nbSemaine = listeCopie;
-
-    //console.log(events);
-    // On récupère donc les dates par tranche de semaines et tranche d'horraires
-
+    // On récupère le nombre d'events par jour
+    let nbEventsPerDay = [];
+    let tab = await page.$$eval("div.fc-event-container", elements => elements.map(item => item.childElementCount));
+    tab.map(item => item !== 0 ? nbEventsPerDay.push(item) : '');
 
     //await page.screenshot({ path: 'example.png' });
 
