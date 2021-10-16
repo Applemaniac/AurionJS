@@ -1,6 +1,6 @@
 # AurionJS
 
-Projet en cours de dévéloppement par un éléve de CIR² à l'ISEN. Le but étant à terme de récupérer son emploi du temps sous la forme d'un flux icalendar. 
+Projet en cours de développement par un élève de CIR² à Junia ISEN. Le but étant à terme de récupérer son emploi du temps sous la forme d'un flux iCalendar. 
 
 ### TODO :
 - [x] Se connecter
@@ -9,16 +9,16 @@ Projet en cours de dévéloppement par un éléve de CIR² à l'ISEN. Le but ét
 - [x] Récupérer les données du mois
 - [x] Traiter les donner pour les passer dans un tableau
 - [ ] Les ordonner pour les avoir a la bonne date
-- [ ] Exporter les données dans un icalendar
-- [ ] Rendre le icalendar disponible en ligne pour synchronisation 
-- [ ] Update auto le fichier tous les soirs
+- [ ] Exporter les données dans un fichier iCalendar
+- [ ] Rendre le iCalendar disponible en ligne pour synchronisation 
+- [ ] Mettre à jour le fichier `iCal` tous les soirs
 
 
 Pour utiliser le script (à vos risques et perils, il n'est pas fini), il faut installer 'puppeteer' :
 ```console
 npm i -g puppeteer
 ```
-Pour l'implementation, il faut créer un fichier "config.js" suivant le template suivant : 
+Pour l'implementation, il faut créer un fichier `config.js` suivant le template suivant : 
 
 ```js
 const user = ""; // Adresse mail junia
