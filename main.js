@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const config = require("./config"); // Fichier avec 2 variables :  user et password.
+const lib = require("./lib");
 
 const username = config.user;
 const password = config.password;
@@ -62,6 +63,10 @@ const landingPageToTimeTable = async page => {
     // On va sur la page de l'emploi du temps en SEMAINE
     await landingPageToTimeTable(page);
 
+    let annee = (await page.$eval("div.fc-center", element => element.textContent));
+    annee = annee.replace(/\d\d\s—\s\d\d\s/, '');
+    annee = annee.slice(annee.indexOf(' '), annee.length);
+    annee = annee.replace(' ', '');
 
     // On récupère tous les cases vertes comme des events
     let events = await page.$$eval("div.fc-content > div.fc-title", elements => elements.map(item => item.textContent));
@@ -78,7 +83,9 @@ const landingPageToTimeTable = async page => {
     let tab = await page.$$eval("div.fc-event-container", elements => elements.map(item => item.childElementCount));
     tab.map(item => item !== 0 ? nbEventsPerDay.push(item) : '');
 
-    //await page.screenshot({ path: 'example.png' });
-
     await browser.close();
+
+    // On crée un fichier ICS avec toutes les cours !
+    lib.creerICS(events, annee, nbEventsPerDay, nbDay);
+
 })();
