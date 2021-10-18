@@ -5,11 +5,11 @@ Projet en cours de développement par un élève de CIR² à Junia ISEN. Le but 
 ### TODO :
 - [x] Se connecter
 - [x] Arriver à la page "Mon planning"
-- [x] Passer en affichage "MOIS"
-- [x] Récupérer les données du mois
+- [x] Passer en affichage "SEMAINE"
+- [x] Récupérer les données de semaine
 - [x] Traiter les donner pour les passer dans un tableau
-- [ ] Les ordonner pour les avoir a la bonne date
-- [ ] Exporter les données dans un fichier iCalendar
+- [x] Exporter les données dans un fichier iCalendar
+- [ ] Boucler 4 fois pour récupérer le mois (les vacances posent problèmes) 
 - [ ] Rendre le iCalendar disponible en ligne pour synchronisation 
 - [ ] Mettre à jour le fichier `iCal` tous les soirs
 

@@ -47,10 +47,37 @@ const landingPageToTimeTable = async page => {
     //button = await page.$("button.fc-month-button.ui-button.ui-state-default.ui-corner-left.ui-corner-right");
     //await button.evaluate(b => b.click());
 
+}
+
+let getOneWeek = async (page, changerDePage) => {
+
+    if (changerDePage !== 0){
+        let button = await page.$("button.fc-next-button.ui-button.ui-state-default.ui-corner-left.ui-corner-right");
+        await button.evaluate(b => b.click());
+    }
+
     await page.waitForSelector("div.fc-center"); // On attend d'avoir la date affichée
     // On affiche la date
     console.log(await page.$eval("div.fc-center", element => element.textContent));
     await page.waitForSelector("div.fc-content > div.fc-title"); // On attend que les casses vertes soient affichées
+
+    let annee = (await page.$eval("div.fc-center", element => element.textContent));
+    annee = annee.replace(/\d\d\s—\s\d\d\s/, '');
+    annee = annee.slice(annee.indexOf(' '), annee.length);
+    annee = annee.replace(' ', '');
+
+    // On récupère tous les cases vertes comme des events
+    let events = await page.$$eval("div.fc-content > div.fc-title", elements => elements.map(item => item.textContent));
+
+    // On récupère les numéros de jour
+    let nbDay = await page.$$eval("th.fc-day-header.ui-widget-header", elements => elements.map(item => item.textContent));
+
+    // On récupère le nombre d'events par jour
+    let nbEventsPerDay = [];
+    let tab = await page.$$eval("div.fc-event-container", elements => elements.map(item => item.childElementCount));
+    tab.map(item => item !== 0 ? nbEventsPerDay.push(item) : '');
+
+    return {"events" : events, "annee" : annee, "nbDay" : nbDay, "nbEventsPerDay" :nbEventsPerDay};
 }
 
 (async () => {
@@ -63,29 +90,13 @@ const landingPageToTimeTable = async page => {
     // On va sur la page de l'emploi du temps en SEMAINE
     await landingPageToTimeTable(page);
 
-    let annee = (await page.$eval("div.fc-center", element => element.textContent));
-    annee = annee.replace(/\d\d\s—\s\d\d\s/, '');
-    annee = annee.slice(annee.indexOf(' '), annee.length);
-    annee = annee.replace(' ', '');
+    let valeurs = await getOneWeek(page,0);
+    await getOneWeek(page,1);
 
-    // On récupère tous les cases vertes comme des events
-    let events = await page.$$eval("div.fc-content > div.fc-title", elements => elements.map(item => item.textContent));
-
-    // On récupère le numéro de semaine
-    let nbSemaine = await page.$eval("th.fc-axis.fc-week-number.ui-widget-header", el => el.textContent);
-    nbSemaine = nbSemaine.replace("W", '');
-
-    // On récupère les numéros de jour
-    let nbDay = await page.$$eval("th.fc-day-header.ui-widget-header", elements => elements.map(item => item.textContent));
-
-    // On récupère le nombre d'events par jour
-    let nbEventsPerDay = [];
-    let tab = await page.$$eval("div.fc-event-container", elements => elements.map(item => item.childElementCount));
-    tab.map(item => item !== 0 ? nbEventsPerDay.push(item) : '');
 
     await browser.close();
 
     // On crée un fichier ICS avec toutes les cours !
-    lib.creerICS(events, annee, nbEventsPerDay, nbDay);
+    lib.creerICS(valeurs.events, valeurs.annee, valeurs.nbEventsPerDay, valeurs.nbDay);
 
 })();
