@@ -1,13 +1,12 @@
-const puppeteer = require("puppeteer");
 const ics = require("ics");
 const fs = require("fs");
 
 /**
- * Fonction qui récupére un Array de string pour le transformer en Array de JSON
+ * Fonction qui récupère un Array de string pour le transformer en Array de JSON
  * Si le cours est le dernier de la journée, le flag #END# se trouve collé au Nom du prof
  * @param string
  * @param annee
- * @returns {{Events: *[]}} JSON type {"salle" : '',"cours" : '', "debut" : '', "fin" : '', "prof" : ''}
+ * @returns [] JSON type {"salle" : '',"cours" : '', "debut" : '', "fin" : '', "prof" : ''}
  */
 let stringToArray = (string, annee) => {
     let retour = [];
@@ -33,8 +32,6 @@ let stringToArray = (string, annee) => {
             line = line.replace(/\s-\s/g, ' ');
             line = line.replace("=>", ' ');
             line = line.replace("(H)", '');
-            //line = line.trim();
-            let cours = line;
 
             retour.push({"annee" : annee, "date" : '', "salle" : '', "cours" : line, "debut" :debut, "fin" : fin, "prof" : prof});
 
@@ -59,8 +56,6 @@ let stringToArray = (string, annee) => {
             line = line.replace("(H)", '');
             line = line.trim();
 
-            let cours = line;
-
             retour.push({"annee" : annee, "date" : '', "salle" : salle[0], "cours" : line, "debut" :debut, "fin" : fin, "prof" : prof});
 
         }
@@ -71,8 +66,8 @@ let stringToArray = (string, annee) => {
 /**
  * Fonction qui récupère des événements formatés et ajoute la date de chacun événement
  * @param events array de string formaté par stringToArray
- * @param nbEventPerDay array d'int qui donne le nombre de cours par jour
- * @param nbDay array d'int qui donne les dates de la semaine
+ * @param nbEventPerDay array de nombres qui donne le nombre de cours par jour
+ * @param nbDay array de nombres qui donne les dates de la semaine
  * @returns {events} array de string formaté avec stringToArray avec la date en plus
  */
 let daterEvents = (events, nbEventPerDay, nbDay) => {
@@ -99,7 +94,7 @@ let daterEvents = (events, nbEventPerDay, nbDay) => {
 /**
  * Fonction qui transforme le array de String en un array utilisable par ICS
  * @param events array de string formaté avec stringToArray
- * @returns {calendar} array utilisable par ICS
+ * @returns {*[]} array utilisable par ICS
  */
 let arrayToIcs = events => {
 
@@ -122,12 +117,9 @@ let arrayToIcs = events => {
 }
 /**
  * Fonction qui fait le pont avec les autres fonctions. Elle demande en entrée les événements non formatés, l'année, le nombre de cours par jour,
- * les dates de la semaine en cours. Elle ne retourne rien ou un code d'erreur et crée un object ics dans le dossier courrant.
+ * les dates de la semaine en cours. Elle ne retourne rien ou un code d'erreur et crée un object ics dans le dossier courant.
  * @param events
- * @param annee
- * @param nbEventsPerDay
- * @param nbDay
- * @returns {string}
+ * @returns {string|Error}
  */
 let creerICS = (events) => {
 
