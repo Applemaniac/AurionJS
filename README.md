@@ -62,7 +62,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-s
 Ensuite il faut installer `Node` et `npm`
 
 ```console
-# On installe d'abord NVM qui permet de choisir quelle version de Node installer
+# On installe d\'abord NVM qui permet de choisir quelle version de Node installer
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 # Redemarer le terminal
 nvm --version
