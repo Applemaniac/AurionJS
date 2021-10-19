@@ -1,4 +1,3 @@
-const data = require("./valeurs");
 const puppeteer = require("puppeteer");
 const ics = require("ics");
 const fs = require("fs");
@@ -7,10 +6,11 @@ const fs = require("fs");
  * Fonction qui récupére un Array de string pour le transformer en Array de JSON
  * Si le cours est le dernier de la journée, le flag #END# se trouve collé au Nom du prof
  * @param string
+ * @param annee
  * @returns {{Events: *[]}} JSON type {"salle" : '',"cours" : '', "debut" : '', "fin" : '', "prof" : ''}
  */
 let stringToArray = (string, annee) => {
-    let retour = {"Events" : []};
+    let retour = [];
     string.forEach(line => {
         // Si la ligne n'est pas du type " - ISEN ......"
         // Elle est trop dure à traiter du coup je fais ce que je peux càd je prends heure, prof, et je garde le reste en texte
@@ -36,18 +36,18 @@ let stringToArray = (string, annee) => {
             //line = line.trim();
             let cours = line;
 
-            retour['Events'].push({"annee" : annee, "date" : '', "salle" : '', "cours" : line, "debut" :debut, "fin" : fin, "prof" : prof});
+            retour.push({"annee" : annee, "date" : '', "salle" : '', "cours" : line, "debut" :debut, "fin" : fin, "prof" : prof});
 
 
         }else{ // Si la ligne est du type " - ISEN ...."
 
-            let salle = Object.values(line.match(/ISEN [ABC]\d\d\d/g));
-            let heure = Object.values(line.match(/\d\d:\d\d/g));
+            let salle = line.match(/ISEN [ABC]\d\d\d/g) === null ? '' : Object.values(line.match(/ISEN [ABC]\d\d\d/g));
+            let heure = line.match(/\d\d:\d\d/g) === null ? '' : Object.values(line.match(/\d\d:\d\d/g));
             let debut = {"minutes" : heure[0].replace(/:\d\d/, ''), "secondes" : heure[0].replace(/\d\d:/, '')};
             let fin = {"minutes" : heure[1].replace(/:\d\d/, ''), "secondes" : heure[1].replace(/\d\d:/, '')};
 
             // Pour trouver le nom du prof, On cherche l'emplacement du Monsieur/Madame
-            let prof = line.slice(line.match(/Monsieur|Madame/).index, line.length);
+            let prof = line.match(/Monsieur|Madame/) === null ? '' : line.slice(line.match(/Monsieur|Madame/).index, line.length);
 
             line = line.replace(/\d\d:\d\d/g, '');
             line = line.replace(prof, '');
@@ -61,7 +61,7 @@ let stringToArray = (string, annee) => {
 
             let cours = line;
 
-            retour['Events'].push({"annee" : annee, "date" : '', "salle" : salle[0], "cours" : line, "debut" :debut, "fin" : fin, "prof" : prof});
+            retour.push({"annee" : annee, "date" : '', "salle" : salle[0], "cours" : line, "debut" :debut, "fin" : fin, "prof" : prof});
 
         }
     });
@@ -83,10 +83,10 @@ let daterEvents = (events, nbEventPerDay, nbDay) => {
     // On met les events dans les jours
     let q = 0;
     let a;
-    for (let i = 0; i < events.Events.length; i++){
+    for (let i = 0; i < events.length; i++){
         a = 0;
         while (a < nbEventPerDay[i]){
-            events.Events[q].date = {"jour" : nbDay[i].replace(/\/\d\d/, ''), "mois" : nbDay[i].replace(/\d\d\//, '')};
+            events[q].date = {"jour" : nbDay[i].replace(/\/\d\d/, ''), "mois" : nbDay[i].replace(/\d\d\//, '')};
             q++;
             a++;
 
@@ -108,12 +108,12 @@ let arrayToIcs = events => {
 
     let calendar = [];
 
-    for (let i = 0; i < events.Events.length; i++){
+    for (let i = 0; i < events.length; i++){
         calendar.push({
-            start : [parseInt(events.Events[i].annee), parseInt(events.Events[i].date.mois), parseInt(events.Events[i].date.jour), parseInt(events.Events[i].debut.minutes), parseInt(events.Events[i].debut.secondes)],
-            end : [parseInt(events.Events[i].annee), parseInt(events.Events[i].date.mois), parseInt(events.Events[i].date.jour), parseInt(events.Events[i].fin.minutes), parseInt(events.Events[i].fin.secondes)],
-            title : events.Events[i].cours,
-            description : events.Events[i].cours + "\n" + events.Events[i].prof + "\n" + events.Events[i].salle,
+            start : [parseInt(events[i].annee), parseInt(events[i].date.mois), parseInt(events[i].date.jour), parseInt(events[i].debut.minutes), parseInt(events[i].debut.secondes)],
+            end : [parseInt(events[i].annee), parseInt(events[i].date.mois), parseInt(events[i].date.jour), parseInt(events[i].fin.minutes), parseInt(events[i].fin.secondes)],
+            title : events[i].cours,
+            description : events[i].cours + "\n" + events[i].prof + "\n" + events[i].salle,
         });
     }
 
@@ -129,11 +129,10 @@ let arrayToIcs = events => {
  * @param nbDay
  * @returns {string}
  */
-let creerICS = (events, annee, nbEventsPerDay, nbDay) => {
+let creerICS = (events) => {
 
-    let calendar = stringToArray(events, annee);
-    calendar = daterEvents(calendar, nbEventsPerDay, nbDay);
-    calendar = arrayToIcs(calendar);
+    let calendar = arrayToIcs(events);
+
     const { error, value } = ics.createEvents(calendar)
 
     if (error) {
@@ -141,11 +140,13 @@ let creerICS = (events, annee, nbEventsPerDay, nbDay) => {
         return error;
     }else{
         fs.writeFileSync("./events.ics", value);
+        return value;
     }
-    return;
 };
 
 
 module.exports = {
+    stringToArray,
+    daterEvents,
     creerICS
 }
