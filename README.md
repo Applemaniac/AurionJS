@@ -77,3 +77,14 @@ nvm install XX.XX.X
 ```
 
 On installe ensuite les dépendances (cf dépendances)
+Dernière étape, on crée un cron pour lancer le script tous les 3 heures 
+
+```console
+# Site pour apprendre à utiliser cron
+https://opensource.com/article/17/11/how-use-cron-linux
+# Exemple de ma config :
+# On lance le script de calandrier
+* */3 * * * node ~/calendar/main.js
+```
+
+Normalement tout est configuré ! Il suffit de rajouter un agenda à partir d'un url pour que le calendrier se met à jour seul !
