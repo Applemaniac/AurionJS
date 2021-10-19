@@ -22,12 +22,16 @@ La suite doit être fait sur un serveur :
 
 ----------------------------------------------------------------------------------------------
 
+#### Dépendances :
+
 Pour utiliser le script, il faut installer 'puppeteer' et 'ics' :
 ```console
 npm i -g puppeteer
 npm i -g ics
 ```
 ----------------------------------------------------------------------------------------------
+
+#### Fichier de configuration :
 
 Pour l'implementation, il faut créer un fichier `config.js` suivant le template suivant : 
 
@@ -54,3 +58,15 @@ https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-
 # Lien pour installer apache2 sur Ubuntu
 https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04
 ```
+
+Ensuite il faut installer `Node` et `npm`
+
+```console
+sudo apt install node
+sudo apt install npm
+sudo npm install -g npm@latest # On met à jour npm
+sudo npm install -g n
+sudo n stable # On met à jour Nodejs
+```
+
+On installe ensuite les dépendances (cf dépendances)
