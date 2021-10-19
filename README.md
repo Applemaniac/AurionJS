@@ -38,10 +38,12 @@ Pour l'implementation, il faut créer un fichier `config.js` suivant le template
 ```js
 const user = ""; // Adresse mail junia
 const password = ""; // mot de passe
+const path = ""; // path sous la forme /vers/ou/vous/voulez/fichier.ics
 
 module.exports = {
     user,
-    password
+    password,
+    path
 };
 ```
 
