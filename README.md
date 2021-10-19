@@ -13,18 +13,21 @@ Projet en cours de développement par deux élèves de CIR² à Junia ISEN. Le b
 - [x] Boucler 4 fois pour récupérer le mois (les vacances posent problèmes) 
 - [x] Ecrire le fichier ics à la racine du script
 ----------------------------------------------------------------------------------------------
+
 #### Shell :
 Toutes ces fonctionnalités sont disponibles dans le code. 
 La suite doit être fait sur un serveur : 
 - [ ] Rendre le iCalendar disponible en ligne pour synchronisation
 - [ ] Mettre à jour le fichier `iCal` tous les soirs
 
+----------------------------------------------------------------------------------------------
 
 Pour utiliser le script, il faut installer 'puppeteer' et 'ics' :
 ```console
 npm i -g puppeteer
 npm i -g ics
 ```
+----------------------------------------------------------------------------------------------
 
 Pour l'implementation, il faut créer un fichier `config.js` suivant le template suivant : 
 
@@ -36,4 +39,10 @@ module.exports = {
     user,
     password
 };
+
+----------------------------------------------------------------------------------------------
+
+#### Shell installation :
+
+
 ```
