@@ -17,7 +17,7 @@ Projet en cours de développement par deux élèves de CIR² à Junia ISEN. Le b
 #### Shell :
 Toutes ces fonctionnalités sont disponibles dans le code. 
 La suite doit être fait sur un serveur : 
-- [ ] Rendre le iCalendar disponible en ligne pour synchronisation
+- [x] Rendre le iCalendar disponible en ligne pour synchronisation
 - [ ] Mettre à jour le fichier `iCal` tous les soirs
 
 ----------------------------------------------------------------------------------------------
