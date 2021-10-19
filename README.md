@@ -62,11 +62,16 @@ https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-s
 Ensuite il faut installer `Node` et `npm`
 
 ```console
-sudo apt install node
-sudo apt install npm
-sudo npm install -g npm@latest # On met à jour npm
-sudo npm install -g n
-sudo n stable # On met à jour Nodejs
+# On installe d'abord NVM qui permet de choisir quelle version de Node installer
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+# Redemarer le terminal
+nvm --version
+> 0.35.3
+# Liste des versions de Nodejs, choisir une version LTS
+nvm ls-remote
+# Installer la version
+nvm install XX.XX.X
+# Voila, nodejs est installé avec npm :)
 ```
 
 On installe ensuite les dépendances (cf dépendances)
