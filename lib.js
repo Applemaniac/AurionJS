@@ -1,5 +1,6 @@
 const ics = require("ics");
 const fs = require("fs");
+const config = require("./config");
 
 /**
  * Fonction qui récupère un Array de string pour le transformer en Array de JSON
@@ -131,7 +132,7 @@ let creerICS = (events) => {
         console.log(error)
         return error;
     }else{
-        fs.writeFileSync("./events.ics", value);
+        fs.writeFileSync(config.path, value);
         return value;
     }
 };

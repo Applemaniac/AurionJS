@@ -97,9 +97,13 @@ let getOneWeek = async (page, changerDePage) => {
     const browser = await startBrowser();
     const page = await browser.newPage();
 
+    await page.setExtraHTTPHeaders({
+        'Accept-Language': 'fr'
+    });
+
     // On se connecte à Aurion
     await connection(page);
-
+    await page.screenshot({path: 'screenshot.png'});
     // On va sur la page de l'emploi du temps en SEMAINE
     await landingPageToTimeTable(page);
 
