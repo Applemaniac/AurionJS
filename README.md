@@ -44,3 +44,13 @@ module.exports = {
 ----------------------------------------------------------------------------------------------
 
 #### Shell installation :
+
+Il faut installer un serveur web ainsi qu'un reverse proxy type `ngnix` pour rendre disponible le fichier ics disponible sur internet. 
+
+```console
+# Lien pour installer ngnix sur Ubuntu
+https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04
+
+# Lien pour installer apache2 sur Ubuntu
+https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04
+```
