@@ -16,8 +16,8 @@ let stringToArray = (string, annee) => {
         if (line[0] !== ' '){
 
             let heure = Object.values(line.match(/\d\d:\d\d/g));
-            let debut = {"minutes" : heure[0].replace(/:\d\d/, ''), "secondes" : heure[0].replace(/\d\d:/, '')};
-            let fin = {"minutes" : heure[1].replace(/:\d\d/, ''), "secondes" : heure[1].replace(/\d\d:/, '')};
+            let debut = {"heures" : heure[0].replace(/:\d\d/, ''), "minutes" : heure[0].replace(/\d\d:/, '')};
+            let fin = {"heures" : heure[1].replace(/:\d\d/, ''), "minutes" : heure[1].replace(/\d\d:/, '')};
             let prof;
             if (line.match(/Monsieur|Madame/) !== null){
                 prof = line.slice(line.match(/Monsieur|Madame/).index, line.length);
@@ -40,8 +40,8 @@ let stringToArray = (string, annee) => {
 
             let salle = line.match(/ISEN [ABC]\d\d\d/g) === null ? '' : Object.values(line.match(/ISEN [ABC]\d\d\d/g));
             let heure = line.match(/\d\d:\d\d/g) === null ? '' : Object.values(line.match(/\d\d:\d\d/g));
-            let debut = {"minutes" : heure[0].replace(/:\d\d/, ''), "secondes" : heure[0].replace(/\d\d:/, '')};
-            let fin = {"minutes" : heure[1].replace(/:\d\d/, ''), "secondes" : heure[1].replace(/\d\d:/, '')};
+            let debut = {"heures" : heure[0].replace(/:\d\d/, ''), "minutes" : heure[0].replace(/\d\d:/, '')};
+            let fin = {"heures" : heure[1].replace(/:\d\d/, ''), "minutes" : heure[1].replace(/\d\d:/, '')};
 
             // Pour trouver le nom du prof, On cherche l'emplacement du Monsieur/Madame
             let prof = line.match(/Monsieur|Madame/) === null ? '' : line.slice(line.match(/Monsieur|Madame/).index, line.length);
@@ -105,8 +105,8 @@ let arrayToIcs = events => {
 
     for (let i = 0; i < events.length; i++){
         calendar.push({
-            start : [parseInt(events[i].annee), parseInt(events[i].date.mois), parseInt(events[i].date.jour), parseInt(events[i].debut.minutes), parseInt(events[i].debut.secondes)],
-            end : [parseInt(events[i].annee), parseInt(events[i].date.mois), parseInt(events[i].date.jour), parseInt(events[i].fin.minutes), parseInt(events[i].fin.secondes)],
+            start : [parseInt(events[i].annee), parseInt(events[i].date.mois), parseInt(events[i].date.jour), parseInt(events[i].debut.heures), parseInt(events[i].debut.minutes)],
+            end : [parseInt(events[i].annee), parseInt(events[i].date.mois), parseInt(events[i].date.jour), parseInt(events[i].fin.heures), parseInt(events[i].fin.minutes)],
             title : events[i].cours,
             description : events[i].cours + "\n" + events[i].prof + "\n" + events[i].salle,
         });
