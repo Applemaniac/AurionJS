@@ -3,6 +3,7 @@
 Projet en cours de développement par deux élèves de CIR² à Junia ISEN. Le but étant à terme de récupérer son emploi du temps sous la forme d'un flux iCalendar. 
 
 ### TODO :
+#### Node.js :
 - [x] Se connecter
 - [x] Arriver à la page "Mon planning"
 - [x] Passer en affichage "SEMAINE"
@@ -12,6 +13,7 @@ Projet en cours de développement par deux élèves de CIR² à Junia ISEN. Le b
 - [x] Boucler 4 fois pour récupérer le mois (les vacances posent problèmes) 
 - [x] Ecrire le fichier ics à la racine du script
 ----------------------------------------------------------------------------------------------
+#### Shell :
 Toutes ces fonctionnalités sont disponibles dans le code. 
 La suite doit être fait sur un serveur : 
 - [ ] Rendre le iCalendar disponible en ligne pour synchronisation
