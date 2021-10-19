@@ -1,6 +1,6 @@
 # AurionJS
 
-Projet en cours de développement par un élève de CIR² à Junia ISEN. Le but étant à terme de récupérer son emploi du temps sous la forme d'un flux iCalendar. 
+Projet en cours de développement par deux élèves de CIR² à Junia ISEN. Le but étant à terme de récupérer son emploi du temps sous la forme d'un flux iCalendar. 
 
 ### TODO :
 - [x] Se connecter
@@ -9,8 +9,12 @@ Projet en cours de développement par un élève de CIR² à Junia ISEN. Le but 
 - [x] Récupérer les données de semaine
 - [x] Traiter les donner pour les passer dans un tableau
 - [x] Exporter les données dans un fichier iCalendar
-- [ ] Boucler 4 fois pour récupérer le mois (les vacances posent problèmes) 
-- [ ] Rendre le iCalendar disponible en ligne pour synchronisation 
+- [x] Boucler 4 fois pour récupérer le mois (les vacances posent problèmes) 
+- [x] Ecrire le fichier ics à la racine du script
+----------------------------------------------------------------------------------------------
+Toutes ces fonctionnalités sont disponibles dans le code. 
+La suite doit être fait sur un serveur : 
+- [ ] Rendre le iCalendar disponible en ligne pour synchronisation
 - [ ] Mettre à jour le fichier `iCal` tous les soirs
 
 
