@@ -20,10 +20,12 @@ La suite doit être fait sur un serveur :
 - [ ] Mettre à jour le fichier `iCal` tous les soirs
 
 
-Pour utiliser le script (à vos risques et perils, il n'est pas fini), il faut installer 'puppeteer' :
+Pour utiliser le script, il faut installer 'puppeteer' et 'ics' :
 ```console
 npm i -g puppeteer
+npm i -g ics
 ```
+
 Pour l'implementation, il faut créer un fichier `config.js` suivant le template suivant : 
 
 ```js
