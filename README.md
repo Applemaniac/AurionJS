@@ -51,6 +51,15 @@ module.exports = {
 
 #### Shell installation :
 
+Verifier la timezone de votre serveur 
+
+```console
+# On verifie la timezone
+timedatectl
+# On modifie la timezone à Paris
+timedatectl set-timezone 'Europe/Paris'
+```
+
 Il faut installer un serveur web ainsi qu'un reverse proxy type `ngnix` pour rendre disponible le fichier ics disponible sur internet. 
 
 ```console
