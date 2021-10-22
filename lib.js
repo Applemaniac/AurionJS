@@ -110,7 +110,7 @@ let arrayToIcs = events => {
             end: [parseInt(events[i].annee), parseInt(events[i].date.mois), parseInt(events[i].date.jour), parseInt(events[i].fin.heures), parseInt(events[i].fin.minutes)],
             title: events[i].cours,
             location: events[i].salle,
-            organizer: { name: events[i].prof }, // Ne s'affiche pas avec Outlook 
+            organizer: { name: events[i].prof, email : 'specimen.specimen@outlookcdlamerde.true' }, // Ne s'affiche pas avec Outlook 
             busyStatus: 'BUSY',
             status: 'CONFIRMED',
             description: events[i].prof,
