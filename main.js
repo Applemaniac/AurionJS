@@ -50,7 +50,7 @@ const landingPageToTimeTable = async page => {
 
 let getOneWeek = async (page, changerDePage) => {
 
-    if (changerDePage !== 0){
+    if (changerDePage !== 0) {
         let button = await page.$("button.fc-next-button.ui-button.ui-state-default.ui-corner-left.ui-corner-right");
         await button.evaluate(b => b.click());
     }
@@ -64,7 +64,8 @@ let getOneWeek = async (page, changerDePage) => {
 
     // Technique de bourrin, on boucle jusqu'à ce que le panneau de chargement disparaisse
     while (await page.$eval('div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow.ui-hidden-container.ui-draggable.ui-resizable', (elem) => {
-        return window.getComputedStyle(elem).getPropertyValue('display') !== 'none';})){
+        return window.getComputedStyle(elem).getPropertyValue('display') !== 'none';
+    })) {
 
     }
 
@@ -86,11 +87,11 @@ let getOneWeek = async (page, changerDePage) => {
     let tab = await page.$$eval("div.fc-event-container", elements => elements.map(item => item.childElementCount));
     tab.map(item => nbEventsPerDayCopy.push(item));
 
-    for (let i = 0; i < nbEventsPerDayCopy.length; i++){
+    for (let i = 0; i < nbEventsPerDayCopy.length; i++) {
         i % 2 !== 0 ? nbEventsPerDay.push(nbEventsPerDayCopy[i]) : '';
     }
 
-    return {"events" : events, "annee" : year, "nbDay" : nbDay, "nbEventsPerDay" : nbEventsPerDay};
+    return { "events": events, "annee": year, "nbDay": nbDay, "nbEventsPerDay": nbEventsPerDay };
 }
 
 (async () => {
@@ -103,7 +104,7 @@ let getOneWeek = async (page, changerDePage) => {
 
     // On se connecte à Aurion
     await connection(page);
-    await page.screenshot({path: 'screenshot.png'});
+    await page.screenshot({ path: 'screenshot.png' });
     // On va sur la page de l'emploi du temps en SEMAINE
     await landingPageToTimeTable(page);
 
@@ -111,11 +112,11 @@ let getOneWeek = async (page, changerDePage) => {
     let week;
     let valeurs;
 
-    for (let semaine = 0; semaine < 4; semaine++){
-        valeurs = await getOneWeek(page,semaine === 0 ? 0 : 1);
+    for (let semaine = 0; semaine < 4; semaine++) {
+        valeurs = await getOneWeek(page, semaine === 0 ? 0 : 1);
         week = lib.stringToArray(valeurs.events, valeurs.annee);
         week = lib.daterEvents(week, valeurs.nbEventsPerDay, valeurs.nbDay);
-        for (let i = 0; i < week.length; i++){
+        for (let i = 0; i < week.length; i++) {
             mois.push(week[i]);
         }
     }

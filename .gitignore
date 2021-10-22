@@ -86,6 +86,10 @@ web_modules/
 .next
 out
 
+# Screenshot and Calendar
+*.ics
+*.png
+
 # Nuxt.js build / generate output
 .nuxt
 dist

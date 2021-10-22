@@ -1,0 +1,24 @@
+{
+  "name": "aurionjs",
+  "version": "1.0.0",
+  "description": "Projet en cours de développement par deux élèves de CIR² à Junia ISEN. Le but étant à terme de récupérer son emploi du temps sous la forme d'un flux iCalendar.",
+  "main": "main.js",
+  "dependencies": {
+    "ics": "^2.31.0",
+    "puppeteer": "^10.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Applemaniac/AurionJS.git"
+  },
+  "author": "Applemaniac",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Applemaniac/AurionJS/issues"
+  },
+  "homepage": "https://github.com/Applemaniac/AurionJS#readme"
+}
