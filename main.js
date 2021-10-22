@@ -104,7 +104,6 @@ let getOneWeek = async (page, changerDePage) => {
 
     // On se connecte à Aurion
     await connection(page);
-    await page.screenshot({ path: 'screenshot.png' });
     // On va sur la page de l'emploi du temps en SEMAINE
     await landingPageToTimeTable(page);
 
