@@ -93,7 +93,8 @@ Dernière étape, on crée un cron pour lancer le script tous les 3 heures
 https://opensource.com/article/17/11/how-use-cron-linux
 # Exemple de ma config :
 # On lance le script de calandrier
-* */3 * * * node ~/calendar/main.js
+* */6 * * * /usr/include/node /home/ubuntu/calendar/main.js >  /home/ubuntu/calendar/log.txt
+# * */6 * * * /PATH/node PATH/SCRIPT/main.js >  PATH/LOG/log.txt
 ```
 
 Normalement tout est configuré ! Il suffit de rajouter un agenda à partir d'un url pour que le calendrier se met à jour seul !
