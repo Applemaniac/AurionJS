@@ -95,6 +95,7 @@ let getOneWeek = async (page, changerDePage) => {
 }
 
 (async () => {
+    console.log(new Date().toLocaleString());
     const browser = await startBrowser();
     const page = await browser.newPage();
 
