@@ -93,7 +93,7 @@ Dernière étape, on crée un cron pour lancer le script tous les 3 heures
 https://opensource.com/article/17/11/how-use-cron-linux
 # Exemple de ma config :
 # On lance le script de calandrier
-* */6 * * * /usr/include/node /home/ubuntu/calendar/main.js >  /home/ubuntu/calendar/log.txt
+* */6 * * * /home/ubuntu/.nvm/versions/node/v14.18.1/bin/node /home/ubuntu/calendar/main.js > /home/ubuntu/calendar/log.txt
 # * */6 * * * /PATH/node PATH/SCRIPT/main.js >  PATH/LOG/log.txt
 ```
 
