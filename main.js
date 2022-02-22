@@ -14,7 +14,8 @@ async function startBrowser() {
             '--no-first-run',
             '--no-zygote',
             '--single-process', // <- this one doesn't works in Windows
-            '--disable-gpu'
+            '--disable-gpu',
+            '--proxy-server=socks5://127.0.0.1:9050' // Proxy TOR for bypassing AURION firewall 
         ],
         headless: true
     }
@@ -23,11 +24,15 @@ async function startBrowser() {
 }
 
 const connection = async page => {
-    await page.goto('https://aurion.junia.com/faces/Login.xhtml', { waitUntil: 'networkidle2' });
+    //await page.goto('https://aurion.junia.com', { waitUntil: 'networkidle2' });
+    await page.goto('https://aurion.junia.com');
+    console.log("Arrived in Aurion");
     await page.focus('#username');
     await page.keyboard.type(username);
+    console.log("username typed");
     await page.focus('#password');
     await page.keyboard.type(password);
+    console.log("password typed");
     page.click("#j_idt28");
 }
 
@@ -98,13 +103,16 @@ let getOneWeek = async (page, changerDePage) => {
     console.log(new Date().toLocaleString());
     const browser = await startBrowser();
     const page = await browser.newPage();
-
     await page.setExtraHTTPHeaders({
         'Accept-Language': 'fr'
     });
 
+    // On met le timeout à 0
+    await page.setDefaultNavigationTimeout(0);
+
     // On se connecte à Aurion
     await connection(page);
+    console.log("Login !");
     // On va sur la page de l'emploi du temps en SEMAINE
     await landingPageToTimeTable(page);
 
