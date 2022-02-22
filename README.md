@@ -1,6 +1,6 @@
 # AurionJS
 
-Projet en cours de développement par deux élèves de CIR² à Junia ISEN. Le but étant à terme de récupérer son emploi du temps sous la forme d'un flux iCalendar. 
+Projet développé par deux élèves de CIR² à Junia ISEN. Le but étant à terme de récupérer son emploi du temps sous la forme d'un flux iCalendar. 
 
 ### TODO :
 #### Node.js :
@@ -12,6 +12,7 @@ Projet en cours de développement par deux élèves de CIR² à Junia ISEN. Le b
 - [x] Exporter les données dans un fichier iCalendar
 - [x] Boucler 4 fois pour récupérer le mois (les vacances posent problèmes) 
 - [x] Ecrire le fichier ics à la racine du script
+- [x] NEW FÉV 2022 - Masquer ip vps car aurion bloque OVH
 ----------------------------------------------------------------------------------------------
 
 #### Shell :
@@ -24,10 +25,26 @@ La suite doit être fait sur un serveur :
 
 #### Dépendances :
 
-Pour utiliser le script, il faut installer 'puppeteer' et 'ics' :
+Pour utiliser le script, il faut installer 'puppeteer' et 'ics' via npm:
 ```console
-npm i -g puppeteer
-npm i -g ics
+npm install
+```
+
+Il faut aussi installer Tor et le configurer : 
+```console
+sudo apt install tor
+# Ajouter à la fin du fichier /etc/tor/torrc : 
+
+sudo nano /etc/tor/torrc
+
+# Open 4 SOCKS ports, each providing a new Tor circuit.
+SocksPort 9050
+SocksPort 9052
+SocksPort 9053
+SocksPort 9054
+
+# Retart tor
+sudo /etc/init.d/tor restart
 ```
 ----------------------------------------------------------------------------------------------
 
