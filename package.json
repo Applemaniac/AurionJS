@@ -5,9 +5,8 @@
   "main": "main.js",
   "dependencies": {
     "ics": "^2.31.0",
-    "puppeteer": "^10.4.0"
+    "puppeteer": "^16.1.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
