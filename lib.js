@@ -12,56 +12,43 @@ const config = require("./config");
 let stringToArray = (string, annee) => {
     let retour = [];
     string.forEach(line => {
-        // Si la ligne n'est pas du type " - ISEN ......"
-        // Elle est trop dure à traiter du coup je fais ce que je peux càd je prends heure, prof, et je garde le reste en texte
-        if (line[0] !== ' ') {
 
-            let heure = Object.values(line.match(/\d\d:\d\d/g));
-            let debut = { "heures": heure[0].replace(/:\d\d/, ''), "minutes": heure[0].replace(/\d\d:/, '') };
-            let fin = { "heures": heure[1].replace(/:\d\d/, ''), "minutes": heure[1].replace(/\d\d:/, '') };
-            let prof;
-            if (line.match(/Monsieur|Madame/) !== null) {
-                prof = line.slice(line.match(/Monsieur|Madame/).index, line.length);
-            } else {
-                prof = line.slice(line.match(/[A-Z]/, line.length));
-            }
+        let heure = Object.values(line.match(/\d\d:\d\d/g));
+        let debut = { "heures": heure[0].replace(/:\d\d/, ''), "minutes": heure[0].replace(/\d\d:/, '') };
+        let fin = { "heures": heure[1].replace(/:\d\d/, ''), "minutes": heure[1].replace(/\d\d:/, '') };
+        let prof = line.match(/Monsieur|Madame/) === null ? '' : line.slice(line.match(/Monsieur|Madame/).index, line.length);
+        let salle = "";
 
-            line = line.replace(/\d\d:\d\d/g, '');
-            line = line.replace(prof, '');
-            line = line.replace(debut, '');
-            line = line.replace(fin, '');
-            line = line.replace(/\s-\s/g, ' ');
-            line = line.replace("=>", ' ');
-            line = line.replace("(H)", '');
+        // Traitement de la salle de classe :
+        // On retire les "Amphi"
+        line = line.replace(/\sAmphi/gm, '');
 
-            retour.push({ "annee": annee, "date": '', "salle": '', "cours": line, "debut": debut, "fin": fin, "prof": prof });
-
-
-        } else { // Si la ligne est du type " - ISEN ...."
-
-            let salle = line.match(/ISEN [ABC]\d\d\d/g) === null ? '' : Object.values(line.match(/ISEN [ABC]\d\d\d/g));
-            let heure = line.match(/\d\d:\d\d/g) === null ? '' : Object.values(line.match(/\d\d:\d\d/g));
-            let debut = { "heures": heure[0].replace(/:\d\d/, ''), "minutes": heure[0].replace(/\d\d:/, '') };
-            let fin = { "heures": heure[1].replace(/:\d\d/, ''), "minutes": heure[1].replace(/\d\d:/, '') };
-
-            // Pour trouver le nom du prof, On cherche l'emplacement du Monsieur/Madame
-            let prof = line.match(/Monsieur|Madame/) === null ? '' : line.slice(line.match(/Monsieur|Madame/).index, line.length);
-
-            line = line.replace(/\d\d:\d\d/g, '');
-            line = line.replace(prof, '');
-            line = line.replace(debut, '');
-            line = line.replace(fin, '');
-            line = line.replace(salle, '');
-            line = line.replace(/\s-\s/g, '');
-            line = line.replace("Amphi JND", '');
-            line = line.replace("(H)", '');
-            line = line.trim();
-
-            retour.push({ "annee": annee, "date": '', "salle": salle[0], "cours": line, "debut": debut, "fin": fin, "prof": prof });
-
+        if (line[0] !== ' ') { // Si c'est du type 'Cours #1 ou TD #1' :
+            line = line.replace(/[a-zA-Z]+\s#\d/g, '');
         }
+
+        // Puis on traite :
+
+        salle = line.match(/(ISEN|HEI)\s[A-Z]\d\d\d/gm) === null ? '' : Object.values(line.match(/(ISEN|HEI)\s[A-Z]\d\d\d/gm))[0];
+
+        // Et enfin on supprime tout ce qui ne sert plus !
+        line = line.replace(/\d\d:\d\d/g, '');
+        line = line.replace(prof, '');
+        line = line.replace(debut, '');
+        line = line.replace(fin, '');
+        line = line.replace(salle, '');
+        line = line.replace(/\s-\s/g, '');
+        line = line.replace("JND ", '');
+        line = line.replace("(H)", '');
+        line = line.replace("H micro main/cravate", '');
+        line = line.replace("Salle de TP", '');
+        line = line.trim();
+
+
+        retour.push({ "annee": annee, "date": '', "salle": salle, "cours": line, "debut": debut, "fin": fin, "prof": prof });
+
     });
-    return retour;
+  return retour;
 }
 
 /**
@@ -110,7 +97,7 @@ let arrayToIcs = events => {
             end: [parseInt(events[i].annee), parseInt(events[i].date.mois), parseInt(events[i].date.jour), parseInt(events[i].fin.heures), parseInt(events[i].fin.minutes)],
             title: events[i].cours,
             location: events[i].salle,
-            organizer: { name: events[i].prof, email : 'specimen.specimen@outlookcdlamerde.true' }, // Ne s'affiche pas avec Outlook 
+            organizer: { name: events[i].prof, email: 'test@test.test' }, // Ne s'affiche pas avec Outlook 
             busyStatus: 'BUSY',
             status: 'CONFIRMED',
             description: events[i].prof,
