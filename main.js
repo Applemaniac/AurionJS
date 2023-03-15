@@ -105,7 +105,7 @@ let getOneWeek = async (page, changerDePage) => {
 };
 
 (async () => {
-    if (!config.hasOwnProperty('username') || !config.hasOwnProperty('password')) {
+    if (!require('./secrets.json') || !require('./secrets.json').hasOwnProperty('username') || !require('./secrets.json').hasOwnProperty('password')) {
         // AurionJS isn't configured for now
         console.log('Vous devez configurer AurionJS lors de la première utilisation.');
         console.log('Pas de soucis à se faire, après vous serez tranquille !\n');
@@ -124,10 +124,10 @@ let getOneWeek = async (page, changerDePage) => {
             } else passwordWrong = false;
         }
 
-        // Update the config file
+        // Update the config object
         config.username = username;
         config.password = password;
-        await fsPromises.writeFile('./config.json', JSON.stringify(config, null, 4));
+        await fsPromises.writeFile('./secrets.json', JSON.stringify(config, null, 4));
         console.log("Le fichier configuration a été modifié... Ne le laissez pas trainer n'importe où !\n");
     }
 

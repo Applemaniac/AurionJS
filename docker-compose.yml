@@ -11,6 +11,8 @@ services:
     environment:
       PROXY_HOST: tor
       CHROME_PATH: /usr/bin/google-chrome
+    volumes:
+      - ./results:/app/results
 
   tor-privoxy:
     image: dperson/torproxy
