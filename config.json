@@ -1,3 +1,4 @@
 {
-    "path": "calendar.ics"
+    "path": "calendar.ics",
+    "proxy_host": "127.0.0.1"
 }

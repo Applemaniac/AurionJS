@@ -3,6 +3,8 @@ const config = require('./config.json');
 const lib = require('./lib');
 const fsPromises = require('fs/promises');
 
+const PROXY_HOST = process.env.PROXY_HOST || "127.0.0.1";
+
 async function startBrowser() {
     const options = {
         args: [
@@ -14,10 +16,12 @@ async function startBrowser() {
             '--no-zygote',
             '--single-process', // <- this one doesn't works in Windows
             '--disable-gpu',
-            '--proxy-server=socks5://127.0.0.1:9050', // Proxy TOR for bypassing AURION firewall
+            `--proxy-server=socks5://${PROXY_HOST}:9050`, // Proxy TOR for bypassing AURION firewall
         ],
         headless: true,
     };
+
+    if (process.env.CHROME_PATH) options.executablePath = process.env.CHROME_PATH;
 
     return puppeteer.launch(options);
 }

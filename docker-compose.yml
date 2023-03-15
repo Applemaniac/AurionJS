@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    depends_on:
+      tor-privoxy:
+        condition: service_healthy
+    links:
+      - tor-privoxy:tor
+    environment:
+      PROXY_HOST: tor
+      CHROME_PATH: /usr/bin/google-chrome
+
+  tor-privoxy:
+    image: dperson/torproxy
+    volumes:
+      - ./proxy:/etc/tor/torrc.d
+    ports:
+      - "9050:9050" # Tor proxy
