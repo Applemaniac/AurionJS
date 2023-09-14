@@ -26,20 +26,18 @@ async function startBrowser() {
 const connection = async page => {
     //await page.goto('https://aurion.junia.com', { waitUntil: 'networkidle2' });
     await page.goto('https://aurion.junia.com');
-    console.log("Arrived in Aurion");
+    console.log("Connexion à WebAurion JUNIA");
     await page.focus('#username');
     await page.keyboard.type(username);
-    console.log("username typed");
     await page.focus('#password');
     await page.keyboard.type(password);
-    console.log("password typed");
-    page.click("#j_idt28");
+    page.click("#j_idt38");
 }
 
 const landingPageToTimeTable = async page => {
 
     // On est arrivé sur la page de compte ! Et on attend que la page charge (c'est super long...)
-    page.once('load', () => console.log("Page de connection chargée !"));
+    page.once('load', () => console.log("Connexion réussie !"));
     await page.waitForNavigation();
     // On cherche le bouton "Mon planning" et on clique dessus
     let button = await page.$("a.ui-menuitem-link.ui-corner-all.link.item_2169484");
@@ -47,7 +45,7 @@ const landingPageToTimeTable = async page => {
 
     // On arrive sur la page de l'emploi du temps. On ne clique plus le bouton MOIS
     //await page.waitForSelector("button.fc-month-button.ui-button.ui-state-default.ui-corner-left.ui-corner-right");
-    page.once('load', () => console.log("Planning chargée !"));
+    page.once('load', () => console.log("Récupération du planning"));
     //button = await page.$("button.fc-month-button.ui-button.ui-state-default.ui-corner-left.ui-corner-right");
     //await button.evaluate(b => b.click());
 
@@ -112,7 +110,6 @@ let getOneWeek = async (page, changerDePage) => {
 
     // On se connecte à Aurion
     await connection(page);
-    console.log("Login !");
     // On va sur la page de l'emploi du temps en SEMAINE
     await landingPageToTimeTable(page);
 
@@ -134,4 +131,6 @@ let getOneWeek = async (page, changerDePage) => {
     // On crée un fichier ICS avec toutes les cours !
     lib.creerICS(mois);
 
+    console.log(`${mois.length} évènement(s) ont été exportés`);
+ 
 })();

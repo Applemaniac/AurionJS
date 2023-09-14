@@ -4,7 +4,7 @@
   "description": "Projet en cours de développement par deux élèves de CIR² à Junia ISEN. Le but étant à terme de récupérer son emploi du temps sous la forme d'un flux iCalendar.",
   "main": "main.js",
   "dependencies": {
-    "ics": "^2.31.0",
+    "ics": "^3.4.0",
     "puppeteer": "^10.4.0"
   },
   "devDependencies": {},
