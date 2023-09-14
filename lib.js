@@ -119,7 +119,7 @@ let arrayToIcs = events => {
             end: [annee, mois, jour, parseInt(events[i].fin.heures), parseInt(events[i].fin.minutes)],
             title: events[i].cours,
             location: events[i].salle,
-            organizer: { name: events[i].prof }, // Ne s'affiche pas avec Outlook 
+            // organizer: { name: events[i].prof }, // Ne s'affiche pas avec Outlook 
             busyStatus: 'BUSY',
             url: 'https://junia-learning.com/my/',
             status: 'CONFIRMED',
