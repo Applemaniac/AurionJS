@@ -31,7 +31,7 @@ const connection = async page => {
     await page.keyboard.type(username);
     await page.focus('#password');
     await page.keyboard.type(password);
-    page.click("#j_idt38");
+    page.click("#j_idt28");
 }
 
 const landingPageToTimeTable = async page => {
