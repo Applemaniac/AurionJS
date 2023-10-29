@@ -5,5 +5,5 @@ const path = "/path/where/you/want/name.ics"; // L'endroit où sauvegarder le fi
 module.exports = {
     user,
     password,
-    path
+    path,
 };
