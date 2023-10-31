@@ -2,6 +2,9 @@ const ics = require("ics");
 const fs = require("fs");
 const config = require("./config");
 
+const classToEmoji = require("./emoji.json");
+const { get } = require("http");
+
 /**
  * Fonction qui récupère un Array de string pour le transformer en Array de JSON
  * Si le cours est le dernier de la journée, le flag #END# se trouve collé au Nom du prof
@@ -104,6 +107,11 @@ let arrayToIcs = (events) => {
                 ? events[i].cours
                 : "Intervention planifiée";
 
+        //remove "Module de Base M1-" from the title
+        title = title.replace(/Module de Base M1-/, "");
+        title = title.replace(/Module Humanité et langue M1-/, "");
+        title = title.replace(/Module M1-/, "");
+
         calendar.push({
             start: [
                 annee,
@@ -119,14 +127,12 @@ let arrayToIcs = (events) => {
                 parseInt(events[i].fin.heures),
                 parseInt(events[i].fin.minutes),
             ],
-            title: title,
-            //events[i].cours,
+            title: getEmojiFromClassTitle(title) + " " + title,
             location: events[i].salle,
             // organizer: { name: events[i].prof }, // Ne s'affiche pas avec Outlook
             busyStatus: "BUSY",
             url: "https://junia-learning.com/my/",
             status: "CONFIRMED",
-            // description: events[i].prof,
             description:
                 `${events[i].line}` +
                 `\n\nPlus d'informations sur https://aurion.junia.com et sur https://junia-learning.com/my/ .` +
@@ -156,6 +162,19 @@ let creerICS = (events) => {
         return value;
     }
 };
+
+function getEmojiFromClassTitle(title) {
+    // Loop through all the keys in classToEmoji
+    for (const className in classToEmoji) {
+        // Use regular expressions to search for the class name in the title (case-insensitive)
+        const regex = new RegExp(className, "i");
+        if (regex.test(title)) {
+            return classToEmoji[className];
+        }
+    }
+    // Return a default emoji if no class name is found in the title
+    return "📝";
+}
 
 module.exports = {
     stringToArray,
