@@ -99,6 +99,19 @@ let getOneWeek = async (page, changerDePage) => {
         (elements) => elements.map((item) => item.innerText)
     );
 
+    let hours = await page.$$eval(
+        "div.fc-content > div.fc-time",
+        (elements) => elements.map((item) => item.innerText)
+    ); 
+
+    // console.log(hours) ;
+    
+    if(events.length == hours.length) {
+        for(i =0 ; i < events.length; i++) {
+            events[i] += ' ' + hours[i]
+        }
+    }
+
     // On récupère les numéros de jour
     let nbDay = await page.$$eval(
         "th.fc-day-header.ui-widget-header",
